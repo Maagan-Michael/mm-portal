@@ -43,9 +43,9 @@ rectangle [Maagan\nMichael\nCloud\n<$Azure>] as cloud {
         }
 
         Namespace_Boundary(nsBackEnd, "Back End") {
-            KubernetesPod(KubernetesBE1, "openfass\nfunction", "")
-            KubernetesPod(KubernetesBE2, "openfass\nfunction", "")
-            KubernetesPod(KubernetesBE3, "openfass\nfunction", "")
+            KubernetesPod(KubernetesBE1, "core\nfunction", "")
+            KubernetesPod(KubernetesBE2, "contibutor\nfunction", "")
+            KubernetesPod(KubernetesBE3, "core\nfunction", "")
         }
     }
 
