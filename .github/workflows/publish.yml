@@ -2,6 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Deploy static content to Pages
 
+env:
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
 on:
   # Runs on pushes targeting the default branch
   push:
