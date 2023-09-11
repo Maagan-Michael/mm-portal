@@ -53,4 +53,3 @@ jobs:
           github_token: ${{ secrets.github_token }}
 
         id: deployment
-        uses: actions/deploy-pages@v1
