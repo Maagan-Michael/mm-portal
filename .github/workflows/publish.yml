@@ -39,7 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.github_token}}
         with:
-          path: src
+          path: docs
           message: "Render PlantUML files"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
