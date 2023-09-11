@@ -2,9 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Deploy static content to Pages
 
-env:
-  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -39,6 +36,8 @@ jobs:
       - name: plantuml
         id: plantuml
         uses: grassedge/generate-plantuml-action@v1.5
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           path: src
           message: "Render PlantUML files"
