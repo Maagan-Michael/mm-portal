@@ -21,31 +21,36 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-      - name: plantuml
-        id: plantuml
-        uses: grassedge/generate-plantuml-action@v1.5
-        env:
-          GITHUB_TOKEN: ${{secrets.github_token}}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          path: docs
-          message: "Render PlantUML files"
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          # Upload the source folder
-          path: './docs'
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate PlantUML diagrams
+        run: npm run generate-diagrams
+
+      - name: Build and Deploy GitHub Pages
+        run: |
+          npm run build
+          mv build docs
+          touch docs/.nojekyll
+
       - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.github_token }}
+
         id: deployment
         uses: actions/deploy-pages@v1
