@@ -1,3 +1,5 @@
-theme: jekyll-theme-minimal
+title: Portal for Maagan Michael
+description: OpenFaaS implementation
+theme: jekyll-theme-tactile
 plugins:
   - jekyll-plantuml
