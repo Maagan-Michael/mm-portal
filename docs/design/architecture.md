@@ -3,6 +3,7 @@
 ## Components
 
 The system is composed of the following components:
+
 1. [Kubernetes](https://kubernetes.io/) - An open source Google system for deploying and managing containers at scale.
 1. [OpenFAAS](https://www.openfaas.com/) - An open source serverless framework.
 1. Idp - TBD
