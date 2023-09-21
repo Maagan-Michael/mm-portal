@@ -16,10 +16,7 @@ jobs:
           sparse-checkout: |
             docs
 
-      - name: Render MkDocs+PlantUML 📖
-        uses: yarons/
-
-      - name: Build and run custom Docker action 🐳
+      - name: Render MkDocs+PlantUML 🐳📖
         run: |
           docker build -t your-custom-action:latest .
           docker run -it --rm -v ${{ github.workspace }}:/docs -u $UID:$GID ghcr.io/maagan-michael/mkdocs-plantuml build
