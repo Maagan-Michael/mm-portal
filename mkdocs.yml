@@ -1,6 +1,7 @@
 site_name: Portal for Maagan Michael
 repo_name: https://github.com/MaaganMichael/mm-portal
 site_description: OpenFaaS Implementation for Maagan Michael's Portal
+site_dir: _site
 theme:
   name: material
 nav:
