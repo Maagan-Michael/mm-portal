@@ -26,8 +26,13 @@ jobs:
         run: |
           docker run --rm -v ${{ github.workspace }}:/docs -u $UID:$GID ghcr.io/maagan-michael/mkdocs-plantuml build
 
-      - name: Deploy to GitHub Pages 📚
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
         with:
-          github_token: ${{ secrets.github_token }}
-          publish_dir: ./_site
+          name: mm-portal-docs
+          path: _site
+
+      - name: Deploy to GitHub Pages 📚
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: mm-portal-docs
