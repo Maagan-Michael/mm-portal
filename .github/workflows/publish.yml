@@ -27,4 +27,7 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/docs -u $UID:$GID ghcr.io/maagan-michael/mkdocs-plantuml build
 
       - name: Deploy to GitHub Pages 📚
-        uses: actions/deploy-pages@v2
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.github_token }}
+          publish_dir: ./_site
