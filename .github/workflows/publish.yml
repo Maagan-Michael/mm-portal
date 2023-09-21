@@ -1,39 +1,28 @@
-# Simple workflow for deploying static content to GitHub Pages
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Deploy static content to Pages
+name: Deploy to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["docs"]
+    branches:
+      - docs  # Change to your main branch name
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
 jobs:
-  generate_plantuml:
+  deploy:
     runs-on: ubuntu-latest
     name: plantuml
     steps:
-    - name: checkout
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: plantuml
-      id: plantuml
-      uses: grassedge/generate-plantuml-action@v1.5
-      with:
-        path: docs
-        message: "Render PlantUML files"
-      env:
-        GITHUB_TOKEN: ${{ secrets.github_token }}
+      - name: Checkout code 🛎️
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docs
+
+      - name: Render MkDocs+PlantUML 📖
+        uses: yarons/
+
+      - name: Build and run custom Docker action 🐳
+        run: |
+          docker build -t your-custom-action:latest .
+          docker run -it --rm -v ${{ github.workspace }}:/docs -u $UID:$GID ghcr.io/maagan-michael/mkdocs-plantuml build
+
+      - name: Deploy to GitHub Pages 📚
+        uses: actions/deploy-pages@v2
