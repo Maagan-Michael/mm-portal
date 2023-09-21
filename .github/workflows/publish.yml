@@ -3,7 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - docs  # Change to your main branch name
+      - docs
+  workflow_dispatch:
 
 permissions:
   contents: read
