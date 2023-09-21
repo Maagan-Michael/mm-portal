@@ -18,7 +18,6 @@ jobs:
 
       - name: Render MkDocs+PlantUML 🐳📖
         run: |
-          docker build -t your-custom-action:latest .
           docker run -it --rm -v ${{ github.workspace }}:/docs -u $UID:$GID ghcr.io/maagan-michael/mkdocs-plantuml build
 
       - name: Deploy to GitHub Pages 📚
