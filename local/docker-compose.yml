@@ -13,7 +13,7 @@ services:
     build: 
       dockerfile: Dockerfile
       context: ../app
-
+  
   nginx:
     image: nginx:1.24.0-alpine
     restart: unless-stopped
@@ -53,6 +53,8 @@ services:
       KC_DB_URL: jdbc:postgresql://db/keycloak
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
       KC_METRICS_ENABLED: true
       KC_HEALTH_ENABLED: true
     healthcheck:
