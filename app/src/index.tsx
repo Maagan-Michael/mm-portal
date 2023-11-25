@@ -1,26 +1,11 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import './index.css';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom/client';
+import App from './app';
+import { BrowserRouter } from "react-router-dom";
 
-// Components
-
-import NavigationMenu from './components/navigationbar';
-import TitleBar from './components/titlebar';
-// import Content from './components/Content';
-
-// Styles
-const App = () => {
-  return (
-    <div className="App">
-      <Router>
-        <NavigationMenu />
-        <TitleBar />
-        {/* <Switch>
-          <Route path="/" component={Content} />
-        </Switch> */}
-      </Router>
-    </div>
-  );
-};
-
-export default App;
+const root = ReactDOM.createRoot(document.getElementById('root')!);
+root.render(
+    <React.StrictMode>
+            <App />
+    </React.StrictMode>
+);
