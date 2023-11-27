@@ -8,5 +8,5 @@ RUN yarn install && yarn run build
 
 
 FROM nginx:1.24.0-alpine
-
+ADD nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /workdir/build /usr/share/nginx/html
