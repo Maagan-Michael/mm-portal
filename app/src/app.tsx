@@ -16,7 +16,7 @@ const App = () => {
   return (
     <ApplicationContext.Provider value={context}>
       <div className="App">
-        <Router>
+        <Router basename='/app'>
           <NavigationMenu />
           <TitleBar />
           <Routes>
