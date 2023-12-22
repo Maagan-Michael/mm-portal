@@ -1,3 +1,11 @@
 site
 ?
 _site
+node_modules/
+build/
+package-lock.json
+yarn.lock
+template
+build
+.secrets
+tools/

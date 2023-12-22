@@ -1,0 +1,75 @@
+version: "3.9"
+services:
+  registry:
+    image: registry:2.8.3
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    volumes:
+      - registry:/var/lib/registry
+      - ./registry/certs:/certs:/certs 
+    environment:
+      REGISTRY_HTTP_ADDR: "0.0.0.0:5000" 
+      REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/host-docker.internal.crt" 
+      REGISTRY_HTTP_TLS_KEY: "/certs/host-docker.internal.key"
+
+  app:
+    hostname: app
+    build: 
+      dockerfile: Dockerfile
+      context: ../app
+  
+  nginx:
+    image: openresty/openresty:1.21.4.3-1-alpine
+    restart: unless-stopped
+    ports: 
+    - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+
+  db:
+    image: postgres:16.1-alpine
+    hostname: db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=mm-portal
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mm-portal"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    hostname: keycloak
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8081:8080"
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db/keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+    healthcheck:
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+      test: curl -k --fail http://localhost/ || exit 1
+    command: start-dev
+
+volumes:
+  pg_data:
+  registry:   

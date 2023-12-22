@@ -1,0 +1,45 @@
+/* Global styles */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigation menu styles */
+.navigation-menu {
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.navigation-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation-menu li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.navigation-menu a {
+  color: #000;
+  text-decoration: none;
+}
+
+/* Title bar styles */
+.title-bar {
+  background-color: #2196F3;
+  color: #fff;
+  padding: 20px;
+}
+
+.title-bar h1 {
+  margin: 0;
+  padding: 0;
+}
+
+/* Content styles */
+.content {
+  padding: 20px;
+}
