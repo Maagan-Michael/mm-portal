@@ -1,0 +1,42 @@
+databaseChangeLog:
+- changeSet:  
+       id:  1
+       author:  Inbar Barkai
+       changes:
+        - createTable:
+             tableName:  budget_daily
+             columns:
+               - column:
+                   name:  record_id
+                   type:  uuid
+                   defaultValue: uuid_generate_v4()
+                   constraints:
+                     nullable: false
+               - column:
+                   name:  user_id
+                   type:  varchar(30)
+                   constraints:
+                     nullable: false
+               - column:
+                   name: event_date
+                   type: date
+                   constraints:
+                     nullable: false
+               - column:
+                   name: amount
+                   type: money
+                   constraints:
+                     nullable: false
+               - column:
+                   name: create_timestamp
+                   type: timestamptz
+                   defaultValue: NOW()
+                   constraints:
+                     nullable: false
+               - column:
+                   name: update_timestamp
+                   type: timestamptz
+                   defaultValue: NOW()
+                   constraints:
+                     nullable: false
+
