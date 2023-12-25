@@ -1,0 +1,3 @@
+pyjwt
+SQLAlchemy
+psycopg2
