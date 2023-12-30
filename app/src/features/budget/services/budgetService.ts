@@ -1,6 +1,6 @@
 import { AuthenticationService } from '../../../common/services/authenticationService';
 import { WebProxy } from '../../../common/utilities/webProxy';
-import UserBudgetDaily from '../models/userBudgetDaily';
+import BudgetRecord from '../models/budgetRecord';
 
 export class BudgetService {
     private proxy: WebProxy
@@ -9,8 +9,8 @@ export class BudgetService {
         this.proxy = new WebProxy(apiUrl, authenticationService);
     }
 
-    public async GetUserBudgetDaily(): Promise<UserBudgetDaily[]> {
-        var result = await this.proxy.getJson<UserBudgetDaily[]>('/user-budget-daily');
+    public async GetUserBudget(): Promise<BudgetRecord[]> {
+        var result = await this.proxy.getJson<BudgetRecord[]>('/user-budget');
         return result;
     }
 }

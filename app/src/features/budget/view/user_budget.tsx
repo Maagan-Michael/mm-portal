@@ -6,7 +6,7 @@ const Content = () => {
     const context = useApplicationContext();
     useEffect(() => {
         var budgetService = new BudgetService(context.getSettingsService().getServerUrl(), context.getAuthenticationService());
-        budgetService.GetUserBudgetDaily();
+        budgetService.GetUserBudget();
     });
     return (<pre>
         Budget daily

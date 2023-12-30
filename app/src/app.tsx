@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './index.css';
 import SecureRoute from './components/secureRoute'
 import Home from './features/home/view/content';
-import BudgetDaily from './features/budget/view/budget_daily';
+import UserBudget from './features/budget/view/user_budget';
 import About from './features/about/view/content';
 import NavigationMenu from './components/navigationbar';
 import TitleBar from './components/titlebar';
@@ -23,7 +23,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<SecureRoute><Home /></SecureRoute>} />
             <Route path="budget">
-              <Route path="daily" element={<SecureRoute><BudgetDaily /></SecureRoute>} />
+              <Route path="daily" element={<SecureRoute><UserBudget /></SecureRoute>} />
             </Route>
             <Route path="signin-callback" element={<SigninCallback />} />
             <Route path="about" element={<About />} />

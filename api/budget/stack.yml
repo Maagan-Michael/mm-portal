@@ -3,10 +3,10 @@ provider:
   name: openfaas
   gateway: http://127.0.0.1:8080
 functions:
-  user-budget-daily:
+  user-budget:
     lang: python3-http
-    handler: ./user_budget_daily
-    image: host.docker.internal:5000/user_budget_daily:1.0
+    handler: ./user_budget
+    image: host.docker.internal:5000/user_budget:1.0
     build_args:
       ADDITIONAL_PACKAGE: "libpq-dev gcc python3-dev musl-dev postgresql-dev"
 
