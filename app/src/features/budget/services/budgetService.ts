@@ -9,8 +9,16 @@ export class BudgetService {
         this.proxy = new WebProxy(apiUrl, authenticationService);
     }
 
-    public async GetUserBudget(): Promise<BudgetRecord[]> {
-        var result = await this.proxy.getJson<BudgetRecord[]>('/user-budget');
+    public async GetUserBudget(fromTimestamp: Date, toTimestamp: Date): Promise<BudgetRecord[]> {
+        if (!fromTimestamp) {
+            fromTimestamp = new Date();
+            fromTimestamp.setDate(fromTimestamp.getDate() - 5);
+        }
+        if (!toTimestamp) {
+            toTimestamp = new Date();
+        }
+        let url = `/user-budget?from=${fromTimestamp.toISOString()}&to=${toTimestamp.toISOString()}`;
+        let result = await this.proxy.getJson<BudgetRecord[]>(url);
         return result;
     }
 }
