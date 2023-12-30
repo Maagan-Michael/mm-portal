@@ -1,4 +1,5 @@
 import { AuthenticationService } from "../services/authenticationService";
+import { JsonHelper } from "./jsonHelper";
 export class WebProxy {
     private authenticationService: AuthenticationService
     private apiUrl: string
@@ -20,7 +21,7 @@ export class WebProxy {
                     return r.json();
                 }
             });
-        return result as T;
+        return JsonHelper.toCamelCase(result) as T;
     }
 
     protected async postAsJson<T>(url: string, body: T, headers: Headers = {} as Headers): Promise<Response> {

@@ -9,7 +9,7 @@ const NavigationMenu = () => {
                     <Link to="/">Home</Link>
                 </li>
                 <li>
-                    <Link to="/budget/daily">Budget Daily</Link>
+                    <Link to="/budget/user">Budget Daily</Link>
                 </li>
                 <li>
                     <Link to="/about">About</Link>

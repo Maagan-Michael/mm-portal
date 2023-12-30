@@ -19,12 +19,15 @@ def handle(event, context):
     request = Request(json.loads(event.body.decode()))
     token = parse_token(request.headers.get('Authorization'))
     if 'user_id' in token:
+        log.info('user_id: %s', token['user_id'])
         repository = BudgetDailyRepository(create_connection())
         limit = datetime.now() - timedelta(days=50)
         result = repository.get_user_budget_daily(token['user_id'], limit)
+        result = [{'event_date': str(x.event_date), 'amount': float(x.amount)}
+                  for x in result]
         return {
             "statusCode": 200,
-            "body": json.dumps(list(result))
+            "body": json.dumps(result)
         }
 
     return {
