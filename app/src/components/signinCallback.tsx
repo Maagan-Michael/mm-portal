@@ -9,7 +9,7 @@ export function SigninCallback() {
         authService.handleSignin()
             .then(user => {
                 if (user) {
-                    let returnUrl = "index";
+                    let returnUrl = "home";
                     if (user.state && (user.state as any).returnUrl) {
                         returnUrl = (user.state as any).returnUrl;
                     }
