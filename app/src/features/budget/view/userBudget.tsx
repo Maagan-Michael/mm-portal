@@ -6,7 +6,7 @@ import { LineChart, YAxis, XAxis, Line, Tooltip, Legend, ResponsiveContainer, Ca
 import { DatePicker } from '@mui/x-date-pickers';
 import Grid from '@mui/material/Grid';
 import dayjs, { Dayjs } from 'dayjs';
-import { InputLabel, MenuItem, Select } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 
 interface IChartData {
     data: BudgetRecord[]
