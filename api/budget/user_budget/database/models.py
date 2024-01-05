@@ -12,7 +12,7 @@ class BudgetDaily(Base):
 
     record_id = Column(UUID(as_uuid=True), primary_key=True,
                        nullable=False, server_default='uuid_generate_v4()')
-    user_id = Column(String(length=30))
+    user_id = Column(String(length=50))
     event_date = Column(Date, nullable=False)
     amount = Column(Numeric, nullable=False, server_default="0")
     create_timestamp = Column(DateTime(timezone=True), nullable=False)
