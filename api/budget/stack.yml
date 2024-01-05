@@ -14,7 +14,5 @@ configuration:
   templates:
     - name: python3-http
       source: https://github.com/openfaas/python-flask-template
-  # copy:
-  #   - ./common
-  #   - ./data
-  #   - ./models      
+  copy:
+    - ./common

@@ -23,3 +23,16 @@ class BudgetDailyRepository(RepositoryBase):
             Record = namedtuple('Record', query_result.keys())
             records = [Record(*r) for r in query_result.fetchall()]
             return records
+
+    def get_average_budget_daily(self, from_timestamp: datetime, to_timestamp, group_by: str) -> Iterable[dict]:
+        query = text("SELECT date_trunc(:group_by, event_date) AS event_date, avg(amount) as amount FROM budget_daily " +
+                     "WHERE event_date >= :from_timestamp AND event_date <= :to_timestamp " +
+                     "GROUP BY 1")
+        with self.connection.connect() as session:
+            query_result = session.execute(query,
+                                      {'group_by': group_by,
+                                       'from_timestamp': from_timestamp,
+                                       'to_timestamp': to_timestamp})
+            Record = namedtuple('Record', query_result.keys())
+            records = [Record(*r) for r in query_result.fetchall()]
+            return records
