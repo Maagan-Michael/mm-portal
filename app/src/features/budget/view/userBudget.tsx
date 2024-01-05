@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useApplicationContext } from '../../../common/utilities/applicationContext';
 import { BudgetService } from '../services/budgetService';
-import BudgetRecord from '../models/budgetRecord';
 import { LineChart, YAxis, XAxis, Line, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { DatePicker } from '@mui/x-date-pickers';
 import Grid from '@mui/material/Grid';
 import dayjs, { Dayjs } from 'dayjs';
 import { MenuItem, Select } from '@mui/material';
 
+interface IChartRecord {
+    globalAmount: number;
+    userAmount: number;
+    eventDate: string;
+}
+
 interface IChartData {
-    data: BudgetRecord[]
+    data: IChartRecord[]
 }
 
 const ChartDisplay = ({ data }: IChartData) => {
@@ -26,7 +31,8 @@ const ChartDisplay = ({ data }: IChartData) => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="amount" stroke="#8884d8" />
+                <Line type="monotone" dataKey="userAmount" stroke="#8884d8" />
+                <Line type="monotone" dataKey="globalAmount" stroke="#82ca9d" />
             </LineChart >
         </ResponsiveContainer>
     );
@@ -34,9 +40,8 @@ const ChartDisplay = ({ data }: IChartData) => {
 
 const Content = () => {
     const context = useApplicationContext();
-    const [data, setData] = useState<BudgetRecord[]>([]);
+    const [data, setData] = useState<IChartRecord[]>([]);
     const executeSetData = (retrievedData) => {
-        retrievedData.forEach(i => i.amount = Math.round((i.amount + Number.EPSILON) * 100) / 100);
         setData(retrievedData);
     };
 
@@ -46,9 +51,26 @@ const Content = () => {
     const [toDate, setToDate] = useState<Dayjs>(defaultToTimestamp);
     const [groupBy, setGroupBy] = useState<string>('day');
 
+    const fetchData = async (budgetService: BudgetService): Promise<IChartRecord[]> => {
+        const userData = await budgetService.GetUserBudget(fromDate, toDate, groupBy);
+        const globalData = await budgetService.GetAverageBudget(fromDate, toDate, groupBy);
+        const dataMap = {} as Map<string, IChartRecord>;
+        const result = [] as IChartRecord[];
+        globalData.forEach((r, i) => {
+            const record = {} as IChartRecord;
+            record.eventDate = getChartKey(r.eventDate, groupBy);
+            record.globalAmount = roundAmount(r.amount);
+            dataMap[record.eventDate] = record;
+            result.push(record);
+        });
+        userData.forEach((r, i) => dataMap[getChartKey(r.eventDate, groupBy)].userAmount = roundAmount(r.amount));
+
+        return result;
+    }
+
     useEffect(() => {
         var budgetService = new BudgetService(context.getSettingsService().getServerUrl(), context.getAuthenticationService());
-        budgetService.GetUserBudget(fromDate, toDate, groupBy)
+        fetchData(budgetService)
             .then(executeSetData);
     }, [fromDate, toDate, groupBy]);
 
@@ -83,6 +105,20 @@ const Content = () => {
 
 export default Content;
 
+function getChartKey(date: Date, groupBy: string): string {
+    const value = dayjs(date);
+    if (groupBy == 'day') {
+        return value.format('YYYY-MM-DD');
+    }
+    if (groupBy == 'month') {
+        return value.format('YYYY-MM');
+    }
+    if (groupBy == 'year') {
+        return value.format('YYYY');
+    }
+    throw `Invalid group by '${groupBy}'.`;
+}
+
 function getDefaultFromTimestamp(): Dayjs {
     let defaultFromTimestamp = new Date();
     defaultFromTimestamp.setDate(defaultFromTimestamp.getDate() - 5);
@@ -91,4 +127,8 @@ function getDefaultFromTimestamp(): Dayjs {
 
 function getDefaultToTimestamp(): Dayjs {
     return dayjs(new Date());;
+}
+
+function roundAmount(amount: number): number {
+    return Math.round((amount + Number.EPSILON) * 100) / 100;
 }

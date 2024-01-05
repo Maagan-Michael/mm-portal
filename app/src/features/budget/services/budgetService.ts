@@ -15,4 +15,10 @@ export class BudgetService {
         let result = await this.proxy.getJson<BudgetRecord[]>(url);
         return result;
     }
+
+    public async GetAverageBudget(fromTimestamp: Dayjs, toTimestamp: Dayjs, groupBy: string): Promise<BudgetRecord[]> {
+        let url = `/avg-budget?from=${fromTimestamp.toISOString()}&to=${toTimestamp.toISOString()}&by=${groupBy}`;
+        let result = await this.proxy.getJson<BudgetRecord[]>(url);
+        return result;
+    }
 }

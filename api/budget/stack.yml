@@ -9,6 +9,12 @@ functions:
     image: host.docker.internal:5000/user_budget:1.0
     build_args:
       ADDITIONAL_PACKAGE: "libpq-dev gcc python3-dev musl-dev postgresql-dev"
+  avg-budget:
+    lang: python3-http
+    handler: ./avg_budget
+    image: host.docker.internal:5000/avg_budget:1.0
+    build_args:
+      ADDITIONAL_PACKAGE: "libpq-dev gcc python3-dev musl-dev postgresql-dev"
 
 configuration:
   templates:
