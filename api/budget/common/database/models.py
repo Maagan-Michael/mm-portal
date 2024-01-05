@@ -18,11 +18,3 @@ class BudgetDaily(Base):
     create_timestamp = Column(DateTime(timezone=True), nullable=False)
     update_timestamp = Column(DateTime(timezone=True),
                               nullable=False, default=True)
-
-    # def __init__(self, **kargs) -> None:
-    #     self.record_id = kargs.get('record_id')
-    #     self.user_id = kargs.get('user_id')
-    #     self.event_date = kargs.get('event_date')
-    #     self.amount = kargs.get('amount')
-    #     self.create_timestamp = kargs.get('create_timestamp')
-    #     self.update_timestamp = kargs.get('update_timestamp')
