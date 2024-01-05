@@ -6,6 +6,7 @@ import { LineChart, YAxis, XAxis, Line, Tooltip, Legend, ResponsiveContainer, Ca
 import { DatePicker } from '@mui/x-date-pickers';
 import Grid from '@mui/material/Grid';
 import dayjs, { Dayjs } from 'dayjs';
+import { InputLabel, MenuItem, Select } from '@mui/material';
 
 interface IChartData {
     data: BudgetRecord[]
@@ -43,12 +44,13 @@ const Content = () => {
     const defaultToTimestamp = getDefaultToTimestamp();
     const [fromDate, setFromDate] = useState<Dayjs>(defaultFromTimestamp);
     const [toDate, setToDate] = useState<Dayjs>(defaultToTimestamp);
+    const [groupBy, setGroupBy] = useState<string>('day');
 
     useEffect(() => {
         var budgetService = new BudgetService(context.getSettingsService().getServerUrl(), context.getAuthenticationService());
-        budgetService.GetUserBudget(fromDate, toDate)
+        budgetService.GetUserBudget(fromDate, toDate, groupBy)
             .then(executeSetData);
-    }, [fromDate, toDate]);
+    }, [fromDate, toDate, groupBy]);
 
     return (<>
         <div style={{ height: '15px' }}>
@@ -59,11 +61,18 @@ const Content = () => {
                 <DatePicker label="From" defaultValue={defaultFromTimestamp} onChange={value => setFromDate(value ?? defaultFromTimestamp)} />
             </Grid>
             <Grid item>
-            </Grid>
-            <Grid item>
                 <DatePicker label="Until" defaultValue={defaultToTimestamp} onChange={value => setToDate(value ?? defaultToTimestamp)} />
             </Grid>
             <Grid item>
+                <Select
+                    value={groupBy}
+                    label="Group By"
+                    onChange={event => setGroupBy(event.target.value)}
+                >
+                    <MenuItem value={'day'}>Day</MenuItem>
+                    <MenuItem value={'month'}>Month</MenuItem>
+                    <MenuItem value={'year'}>Year</MenuItem>
+                </Select>
             </Grid>
         </Grid>
         <div>

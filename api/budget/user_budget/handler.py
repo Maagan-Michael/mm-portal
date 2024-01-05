@@ -21,11 +21,16 @@ def handle(event, context):
     from_timestamp = request.body.get(
         'from', datetime.now() - timedelta(days=10))
     to_timestamp = request.body.get('to', datetime.now())
+    group_by = request.body.get('by', 'day')
     if 'user_id' in token:
         log.info('user_id: %s', token['user_id'])
         repository = BudgetDailyRepository(create_connection())
         result = repository.get_user_budget_daily(
-            token['user_id'], from_timestamp, to_timestamp)
+            token['user_id'], 
+            from_timestamp, 
+            to_timestamp,
+            group_by
+            )
         result = [
             {'event_date': str(x.event_date), 'amount': float(x.amount)}
             for x in result

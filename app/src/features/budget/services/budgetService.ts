@@ -10,8 +10,8 @@ export class BudgetService {
         this.proxy = new WebProxy(apiUrl, authenticationService);
     }
 
-    public async GetUserBudget(fromTimestamp: Dayjs, toTimestamp: Dayjs): Promise<BudgetRecord[]> {
-        let url = `/user-budget?from=${fromTimestamp.toISOString()}&to=${toTimestamp.toISOString()}`;
+    public async GetUserBudget(fromTimestamp: Dayjs, toTimestamp: Dayjs, groupBy: string): Promise<BudgetRecord[]> {
+        let url = `/user-budget?from=${fromTimestamp.toISOString()}&to=${toTimestamp.toISOString()}&by=${groupBy}`;
         let result = await this.proxy.getJson<BudgetRecord[]>(url);
         return result;
     }
