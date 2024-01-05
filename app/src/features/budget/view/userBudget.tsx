@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApplicationContext } from '../../../common/utilities/applicationContext';
 import { BudgetService } from '../services/budgetService';
 import BudgetRecord from '../models/budgetRecord';
 import { LineChart, YAxis, XAxis, Line, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { DatePicker } from '@mui/x-date-pickers';
+import Grid from '@mui/material/Grid';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface IChartData {
     data: BudgetRecord[]
@@ -31,17 +34,52 @@ const ChartDisplay = ({ data }: IChartData) => {
 const Content = () => {
     const context = useApplicationContext();
     const [data, setData] = useState<BudgetRecord[]>([]);
-
     const executeSetData = (retrievedData) => {
-        retrievedData.forEach(i=>i.amount = Math.round((i.amount + Number.EPSILON) * 100) / 100);
+        retrievedData.forEach(i => i.amount = Math.round((i.amount + Number.EPSILON) * 100) / 100);
         setData(retrievedData);
     };
+
+    const defaultFromTimestamp = getDefaultFromTimestamp();
+    const defaultToTimestamp = getDefaultToTimestamp();
+    const [fromDate, setFromDate] = useState<Dayjs>(defaultFromTimestamp);
+    const [toDate, setToDate] = useState<Dayjs>(defaultToTimestamp);
+
     useEffect(() => {
         var budgetService = new BudgetService(context.getSettingsService().getServerUrl(), context.getAuthenticationService());
-        budgetService.GetUserBudget()
+        budgetService.GetUserBudget(fromDate, toDate)
             .then(executeSetData);
-    }, []);
-    return (<ChartDisplay data={data} />);
+    }, [fromDate, toDate]);
+
+    return (<>
+        <div style={{ height: '15px' }}>
+
+        </div>
+        <Grid container spacing={2}>
+            <Grid item>
+                <DatePicker label="From" defaultValue={defaultFromTimestamp} onChange={value => setFromDate(value ?? defaultFromTimestamp)} />
+            </Grid>
+            <Grid item>
+            </Grid>
+            <Grid item>
+                <DatePicker label="Until" defaultValue={defaultToTimestamp} onChange={value => setToDate(value ?? defaultToTimestamp)} />
+            </Grid>
+            <Grid item>
+            </Grid>
+        </Grid>
+        <div>
+            <ChartDisplay data={data} />
+        </div>
+    </>);
 };
 
 export default Content;
+
+function getDefaultFromTimestamp(): Dayjs {
+    let defaultFromTimestamp = new Date();
+    defaultFromTimestamp.setDate(defaultFromTimestamp.getDate() - 5);
+    return dayjs(defaultFromTimestamp);
+}
+
+function getDefaultToTimestamp(): Dayjs {
+    return dayjs(new Date());;
+}
